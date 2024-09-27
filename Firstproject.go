@@ -8,6 +8,19 @@ import (
 	"strings"
 )
 
+func isSameFormat(arg1, arg2 string) bool {
+
+	if romanToInt(arg1) == 0 && romanToInt(arg2) != 0 {
+		return false
+	}
+
+	if romanToInt(arg1) != 0 && romanToInt(arg2) == 0 {
+		return false
+	}
+
+	return true
+}
+
 func add(arg1, arg2 int) int {
 	return arg1 + arg2
 }
@@ -41,6 +54,9 @@ func main() {
 	operator := splittedLineFromTerminal[1]
 	secondNumberAsString := splittedLineFromTerminal[2]
 
+	if !isSameFormat(firstNumberAsString, secondNumberAsString) {
+		panic("числа данны в разных форматах")
+	}
 
 	var isRoman bool
 	if romanToInt(secondNumberAsString) != 0 {
@@ -59,7 +75,7 @@ func main() {
 	if !isRoman && (firstNumberAsInt > 10 || secondNumberAsInt > 10) {
 		panic("арабское число больше 10")
 	}
-	
+
 	if firstNumberAsInt == 0 || secondNumberAsInt == 0 {
 		panic("арабское число не может быть 0")
 	}
@@ -78,6 +94,8 @@ func main() {
 
 	if resultAsInt < 1 && isRoman {
 		panic("результат отрицательный")
+	} else if resultAsInt > 100 && isRoman {
+		panic("Результат должен быть до 100")
 	}
 
 	var resultAsString string
@@ -97,8 +115,6 @@ func romanToInt(s string) int {
 		"X": 10,
 		"L": 50,
 		"C": 100,
-		"D": 500,
-		"M": 1000,
 	}
 	lengthOfString := len(s)
 	lastElement := s[len(s)-1 : lengthOfString]
@@ -111,13 +127,14 @@ func romanToInt(s string) int {
 			result -= know[s[i-1:i]]
 		}
 	}
+
 	return result
 }
 
 func intToRoman(num int) string {
 	var roman string = ""
-	var numbers = []int{1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000}
-	var romans = []string{"I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"}
+	var numbers = []int{1, 4, 5, 9, 10, 40, 50, 90, 100}
+	var romans = []string{"I", "IV", "V", "IX", "X", "XL", "L", "XC", "C"}
 	var index = len(romans) - 1
 
 	for num > 0 {

@@ -59,6 +59,10 @@ func main() {
 	if !isRoman && (firstNumberAsInt > 10 || secondNumberAsInt > 10) {
 		panic("арабское число больше 10")
 	}
+	
+	if firstNumberAsInt == 0 || secondNumberAsInt == 0 {
+		panic("арабское число не может быть 0")
+	}
 
 	var resultAsInt int
 	switch operator {
